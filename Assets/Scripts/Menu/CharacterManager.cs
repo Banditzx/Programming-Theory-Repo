@@ -15,7 +15,17 @@ public class CharacterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SelectCharacter(characters[selectedCharacterIndex]);
+        if (StoreManager.Instance.characterIndex > 0)
+        {
+            var index = StoreManager.Instance.characterIndex;
+            SelectCharacter(characters[index]);
+            ChageCounter(index + 1);
+            selectedCharacterIndex = index;
+        }
+        else
+        {
+            SelectCharacter(characters[selectedCharacterIndex]);
+        }
     }
 
     public void NextCharacter()
@@ -40,7 +50,7 @@ public class CharacterManager : MonoBehaviour
 
     public void EnterToWorld()
     {
-        StoreManager.Instance.character = selectedCharacter;
+        StoreManager.Instance.SetCharacterIndex(selectedCharacterIndex);
         SceneManager.LoadScene(1);
     }
 
