@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] protected GameObject mainCamera;
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpPower;
+    [SerializeField] public GameObject mainCamera;
+    [SerializeField] protected float speed;
+    [SerializeField] protected float jumpPower;
     [SerializeField] protected bool isGrounded = true;
 
     private Animator characterAnim;
@@ -38,7 +38,10 @@ public abstract class Character : MonoBehaviour
 
     private void LateUpdate()
     {
-        mainCamera.transform.position = transform.position;
+        if (mainCamera)
+        {
+            mainCamera.transform.position = transform.position;
+        }
 
         if (gameObject.transform.position.y < 0)
         {
@@ -60,9 +63,12 @@ public abstract class Character : MonoBehaviour
             characterAnim.SetFloat("Speed_f", 0.0f);
         }
 
-        characterRigidBody.AddForce(mainCamera.transform.forward * forwardInput * speed);
-        gameObject.transform.Rotate(Vector3.up * rotateInput);
-        mainCamera.transform.Rotate(Vector3.up * rotateInput);
+        if (mainCamera)
+        {
+            characterRigidBody.AddForce(mainCamera.transform.forward * forwardInput * speed);
+            gameObject.transform.Rotate(Vector3.up * rotateInput);
+            mainCamera.transform.Rotate(Vector3.up * rotateInput);
+        }
     }
 
     private void Sprint() 
